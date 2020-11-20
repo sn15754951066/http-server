@@ -48,6 +48,7 @@ public class HttpManager {
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60,TimeUnit.SECONDS)
                 .addInterceptor(new LoggingInterceptor())
+                .addInterceptor(new HeaderInterceptor())
                 .build();
         return okHttpClient;
     }
@@ -57,6 +58,17 @@ public class HttpManager {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
+            return chain.proceed(request);
+        }
+    }
+
+    static class HeaderInterceptor implements Interceptor{
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request().newBuilder()
+                    .addHeader("Authorization","APPCODE 964e16aa1ae944e9828e87b8b9fbd30a")
+                    .build();
             return chain.proceed(request);
         }
     }

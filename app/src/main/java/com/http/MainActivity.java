@@ -2,11 +2,13 @@ package com.http;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.http.api.ServiceApi;
 import com.http.module.data.CityData;
 import com.http.net.HttpManager;
+import com.http.ui.home.HomeActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initData();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        //initData();
     }
 
     private void initData() {
