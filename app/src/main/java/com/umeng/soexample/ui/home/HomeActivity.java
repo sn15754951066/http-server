@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.soexample.R;
+import com.umeng.soexample.base.BaseActivity;
 import com.umeng.soexample.interfaces.IHome;
 import com.umeng.soexample.module.data.CityData;
 import com.umeng.soexample.module.data.WeatherData;
@@ -17,7 +18,7 @@ import com.umeng.soexample.persenter.home.HomePersenter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements IHome.View {
+public class HomeActivity extends BaseActivity<HomePersenter> implements IHome.View {
 
     //接口类型
     IHome.Persenter homePersenter;
@@ -25,13 +26,16 @@ public class HomeActivity extends AppCompatActivity implements IHome.View {
     TextView txtLoading;
     CityData cityData;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+    protected int getLayout() {
+        return R.layout.activity_home;
+    }
+
+    @Override
+    protected void initView() {
         btnWeather = findViewById(R.id.btn_weather);
         txtLoading = findViewById(R.id.txt_loading);
-        initData();
         btnWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +48,13 @@ public class HomeActivity extends AppCompatActivity implements IHome.View {
         });
     }
 
-    private void initData() {
+    @Override
+    protected HomePersenter createPersenter() {
+        return new HomePersenter(this);
+    }
+
+    @Override
+    protected void initData() {
         homePersenter = new HomePersenter(this);
         homePersenter.getCity();
     }

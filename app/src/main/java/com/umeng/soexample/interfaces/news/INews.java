@@ -1,6 +1,6 @@
 package com.umeng.soexample.interfaces.news;
 
-import com.umeng.soexample.interfaces.BaseView;
+import com.umeng.soexample.interfaces.IBaseView;
 import com.umeng.soexample.interfaces.IBasePersenter;
 
 /**
@@ -8,7 +8,7 @@ import com.umeng.soexample.interfaces.IBasePersenter;
  */
 public interface INews {
 
-    interface View extends BaseView{
+    interface View extends IBaseView {
         void getNewsReturn(String result);
     }
 

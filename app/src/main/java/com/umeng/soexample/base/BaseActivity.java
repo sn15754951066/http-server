@@ -1,26 +1,30 @@
 package com.umeng.soexample.base;
 
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.umeng.soexample.interfaces.BaseView;
+import com.umeng.soexample.interfaces.IBaseView;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
-public abstract class BaseActivity<P extends BasePersenter> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<P extends BasePersenter> extends AppCompatActivity implements IBaseView {
 
 
     //p层关联
     protected P persenter;
+    Unbinder unbinder; //butterknife
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //需要界面view
         setContentView(getLayout());
+        unbinder = ButterKnife.bind(this);
         //初始化界面
         initView();
         persenter = createPersenter();
@@ -61,6 +65,13 @@ public abstract class BaseActivity<P extends BasePersenter> extends AppCompatAct
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(unbinder != null){
+            unbinder.unbind();
+        }
+        //释放p关联的v的引用
+        if(persenter != null){
+            persenter.unAttachView();
+        }
     }
 
 

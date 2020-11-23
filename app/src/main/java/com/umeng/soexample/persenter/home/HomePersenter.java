@@ -2,15 +2,17 @@ package com.umeng.soexample.persenter.home;
 
 import android.view.View;
 
+import com.umeng.soexample.base.BasePersenter;
 import com.umeng.soexample.interfaces.Callback;
 import com.umeng.soexample.interfaces.IHome;
 import com.umeng.soexample.module.data.CityData;
-import com.umeng.soexample.module.data.HomeModel;
+import com.umeng.soexample.module.home.HomeModel;
 import com.umeng.soexample.module.data.WeatherData;
 
 import java.util.Map;
 
-public class HomePersenter implements IHome.Persenter {
+public class HomePersenter extends BasePersenter<IHome.View> implements IHome.Persenter {
+
 
     IHome.View view;
     IHome.Model model;
@@ -64,5 +66,14 @@ public class HomePersenter implements IHome.Persenter {
                 }
             }
         });
+    }
+
+    @Override
+    public void unAttachView() {
+        super.unAttachView();
+        //释放当前页面还未完成的网络请求
+        if(model != null){
+            model.clear();
+        }
     }
 }
