@@ -6,11 +6,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.umeng.soexample.interfaces.IBaseView;
+import com.umeng.soexample.persenter.home.HomePersenter;
+import com.umeng.soexample.persenter.news.NewsPersenter;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-
+/**
+ * activity基类
+ * @param <P>
+ */
 public abstract class BaseActivity<P extends BasePersenter> extends AppCompatActivity implements IBaseView {
 
 

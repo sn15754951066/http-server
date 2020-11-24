@@ -1,6 +1,10 @@
-package com.umeng.soexample.interfaces;
+package com.umeng.soexample.interfaces.home;
 
 import com.umeng.soexample.base.BaseModel;
+import com.umeng.soexample.interfaces.Callback;
+import com.umeng.soexample.interfaces.IBasePersenter;
+import com.umeng.soexample.interfaces.IBaseView;
+import com.umeng.soexample.interfaces.IModel;
 import com.umeng.soexample.module.data.CityData;
 import com.umeng.soexample.module.data.WeatherData;
 

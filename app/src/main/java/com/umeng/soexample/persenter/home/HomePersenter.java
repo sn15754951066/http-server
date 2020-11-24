@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.umeng.soexample.base.BasePersenter;
 import com.umeng.soexample.interfaces.Callback;
-import com.umeng.soexample.interfaces.IHome;
+import com.umeng.soexample.interfaces.home.IHome;
 import com.umeng.soexample.module.data.CityData;
 import com.umeng.soexample.module.home.HomeModel;
 import com.umeng.soexample.module.data.WeatherData;
@@ -16,6 +16,7 @@ public class HomePersenter extends BasePersenter<IHome.View> implements IHome.Pe
 
     IHome.View view;
     IHome.Model model;
+
 
 
     public HomePersenter(IHome.View view){

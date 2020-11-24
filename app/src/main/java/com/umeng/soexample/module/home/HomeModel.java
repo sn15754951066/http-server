@@ -1,22 +1,17 @@
 package com.umeng.soexample.module.home;
 
-import com.umeng.soexample.api.ServiceApi;
 import com.umeng.soexample.base.BaseModel;
 import com.umeng.soexample.interfaces.Callback;
-import com.umeng.soexample.interfaces.IHome;
+import com.umeng.soexample.interfaces.home.IHome;
 import com.umeng.soexample.module.data.CityData;
 import com.umeng.soexample.module.data.WeatherData;
 import com.umeng.soexample.net.CommonSubscriber;
 import com.umeng.soexample.net.HttpManager;
 import com.umeng.soexample.utils.RxUtils;
 
-import java.io.IOException;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import io.reactivex.subscribers.ResourceSubscriber;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class HomeModel extends BaseModel implements IHome.Model {
     @Override
