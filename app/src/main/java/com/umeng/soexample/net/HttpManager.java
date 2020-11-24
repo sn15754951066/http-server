@@ -1,6 +1,7 @@
 package com.umeng.soexample.net;
 
 import com.umeng.soexample.api.ServiceApi;
+import com.umeng.soexample.api.TongpaoApi;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -34,8 +35,10 @@ public class HttpManager {
 
     private ServiceApi serviceApi;
 
-    private Retrofit getRetrofit(){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(ServiceApi.BASE_URL)
+    private TongpaoApi tongpaoApi;  //同袍
+
+    private Retrofit getRetrofit(String url){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
                 .client(getOkHttpClient())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -79,9 +82,20 @@ public class HttpManager {
      */
     public ServiceApi getService(){
         if(serviceApi == null){
-            serviceApi = getRetrofit().create(ServiceApi.class);
+            serviceApi = getRetrofit(ServiceApi.BASE_URL).create(ServiceApi.class);
         }
         return serviceApi;
+    }
+
+    /**
+     * TongpaoApi
+     * @return
+     */
+    public TongpaoApi getTongpaoApi(){
+        if(tongpaoApi ==  null){
+            tongpaoApi = getRetrofit(TongpaoApi.BASE_URL).create(TongpaoApi.class);
+        }
+        return tongpaoApi;
     }
 
 
