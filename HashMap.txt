@@ -1,0 +1,8 @@
+
+Object
+
+HashMap
+底层：数组+链表或数组+红黑树
+存储数据的实行：key,value
+
+

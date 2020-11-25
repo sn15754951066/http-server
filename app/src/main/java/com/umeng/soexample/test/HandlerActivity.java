@@ -9,6 +9,9 @@ import android.os.Message;
 
 import com.umeng.soexample.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HandlerActivity extends AppCompatActivity {
     private MyHandler handler = new MyHandler();
     @Override
@@ -17,6 +20,10 @@ public class HandlerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_handler);
 
         initView();
+
+        HashMap<String,Integer> map = new HashMap<>();
+        map.put("1",1);
+
     }
 
     private void initView() {
