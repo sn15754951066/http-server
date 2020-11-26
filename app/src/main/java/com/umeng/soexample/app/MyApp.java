@@ -8,9 +8,13 @@ import com.umeng.socialize.PlatformConfig;
 
 public class MyApp extends Application {
 
+
+    public static MyApp app;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
         initUM();
     }
 

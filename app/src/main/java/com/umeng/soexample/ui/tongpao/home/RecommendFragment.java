@@ -13,6 +13,7 @@ import com.umeng.soexample.module.data.tongpao.HotUserBean;
 import com.umeng.soexample.module.data.tongpao.RecommendBean;
 import com.umeng.soexample.persenter.tongpao.RecommendPersenter;
 import com.umeng.soexample.ui.tongpao.adapter.DiscussedAdapter;
+import com.umeng.soexample.ui.tongpao.adapter.RecommendAdapter;
 import com.youth.banner.Banner;
 
 import java.util.ArrayList;
@@ -30,9 +31,13 @@ public class RecommendFragment extends BaseFragment<RecommendPersenter> implemen
     @BindView(R.id.recyclerview_hotuser)
     RecyclerView recyclerviewHotuser;
 
-
+    //话题
     DiscussedAdapter discussedAdapter;
     List<DiscussedBean.DataBean> discussedList;
+
+    //推荐列表数据
+    RecommendAdapter recommendAdapter;
+    List<RecommendBean.DataBean.PostDetailBean> recommendList;
 
 
     @Override
@@ -52,6 +57,11 @@ public class RecommendFragment extends BaseFragment<RecommendPersenter> implemen
 
             }
         });
+
+        recommendList = new ArrayList<>();
+        recommendAdapter = new RecommendAdapter(mContext,recommendList);
+        recyclerviewRecommend.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerviewRecommend.setAdapter(recommendAdapter);
     }
 
     @Override
@@ -61,12 +71,16 @@ public class RecommendFragment extends BaseFragment<RecommendPersenter> implemen
 
     @Override
     public void initData() {
+        persenter.getBanner();
         persenter.getRecommend();
+        persenter.getDiscuessed();
     }
 
     @Override
     public void getRecommendReturn(RecommendBean result) {
-
+        recommendList.clear();
+        recommendList.add(result.getData().getPostDetail());
+        recommendAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.umeng.soexample.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ public abstract class BaseFragment<P extends BasePersenter> extends Fragment imp
 
     protected P persenter;
     Unbinder unbinder;
+    protected Context mContext;
 
     @Nullable
     @Override
@@ -29,6 +31,7 @@ public abstract class BaseFragment<P extends BasePersenter> extends Fragment imp
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mContext = getContext();
         unbinder = ButterKnife.bind(this,view);
         persenter = createPersenter();
         if(persenter != null){

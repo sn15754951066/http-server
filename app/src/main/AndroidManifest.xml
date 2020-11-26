@@ -34,6 +34,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".ui.tongpao.TongpaoActivity"/>
+        <activity android:name=".ui.tongpao.bigimage.BigImageActivity"/>
     </application>
 
 </manifest>
