@@ -1,9 +1,13 @@
 package com.umeng.soexample.net;
 
+import com.umeng.soexample.api.HttpApi;
+import com.umeng.soexample.api.ImageApi;
 import com.umeng.soexample.api.ServiceApi;
 import com.umeng.soexample.api.TongpaoApi;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -36,6 +40,15 @@ public class HttpManager {
     private ServiceApi serviceApi;
 
     private TongpaoApi tongpaoApi;  //同袍
+
+    private HttpApi httpApi; //局域网接口请求测试
+
+    private ImageApi imageApi; //图片下载接口
+
+    private Map<String,Retrofit> map = new HashMap<>();  //retrofit请求对象的对象池
+
+
+
 
     private Retrofit getRetrofit(String url){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
@@ -98,6 +111,33 @@ public class HttpManager {
         return tongpaoApi;
     }
 
+    /**
+     * HttpApi
+     * @return
+     */
+    public HttpApi getHttpApi(){
+        if(httpApi ==  null){
+            httpApi = getRetrofit(HttpApi.BASE_URL).create(HttpApi.class);
+        }
+        return httpApi;
+    }
+
+    /**
+     * 获取图片下载的对象
+     * @param baseUrl
+     * @return
+     */
+    public ImageApi getImageApi(String baseUrl){
+        Retrofit retrofit = map.get(baseUrl);
+        if(retrofit != null){
+            imageApi = retrofit.create(ImageApi.class);
+        }else{
+            retrofit = getRetrofit(baseUrl);
+            imageApi = retrofit.create(ImageApi.class);
+            map.put(baseUrl,retrofit);
+        }
+        return imageApi;
+    }
 
 
 }

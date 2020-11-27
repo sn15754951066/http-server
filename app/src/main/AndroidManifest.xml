@@ -35,6 +35,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".ui.tongpao.TongpaoActivity"/>
         <activity android:name=".ui.tongpao.bigimage.BigImageActivity"/>
+        <activity android:name=".test.HttpActivity"/>
     </application>
 
 </manifest>

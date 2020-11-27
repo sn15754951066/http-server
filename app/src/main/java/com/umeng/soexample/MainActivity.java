@@ -11,6 +11,7 @@ import com.umeng.soexample.api.ServiceApi;
 import com.umeng.soexample.module.data.CityData;
 import com.umeng.soexample.net.HttpManager;
 import com.umeng.soexample.test.HandlerActivity;
+import com.umeng.soexample.test.HttpActivity;
 import com.umeng.soexample.ui.home.HomeActivity;
 import com.umeng.soexample.ui.tongpao.TongpaoActivity;
 import com.umeng.soexample.um.SharedActivity;
@@ -22,7 +23,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    Button btnShared,btnTongpao,btnTest;
+    Button btnShared,btnTongpao,btnTest,btnHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnShared = findViewById(R.id.btn_share);
         btnTongpao = findViewById(R.id.btn_tongpao);
         btnTest = findViewById(R.id.btn_test);
+        btnHttp = findViewById(R.id.btn_http);
         btnShared.setOnClickListener(this);
         btnTongpao.setOnClickListener(this);
         btnTest.setOnClickListener(this);
+        btnHttp.setOnClickListener(this);
        /* Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);*/
     }
@@ -52,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_test:
                 Intent intent2 = new Intent(MainActivity.this, HandlerActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.btn_http:
+                Intent intent3 = new Intent(MainActivity.this, HttpActivity.class);
+                startActivity(intent3);
                 break;
         }
     }

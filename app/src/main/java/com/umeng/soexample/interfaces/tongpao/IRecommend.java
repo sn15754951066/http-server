@@ -51,6 +51,7 @@ public interface IRecommend {
         void getDiscuessed(Callback callback);
 
         void getHotUser(Callback callback);
+
     }
 
 

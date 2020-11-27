@@ -3,6 +3,7 @@ package com.umeng.soexample.module.tongpao;
 import com.umeng.soexample.api.TongpaoApi;
 import com.umeng.soexample.base.BaseModel;
 import com.umeng.soexample.interfaces.Callback;
+import com.umeng.soexample.interfaces.tongpao.IDown;
 import com.umeng.soexample.interfaces.tongpao.IRecommend;
 import com.umeng.soexample.module.data.tongpao.BannerBean;
 import com.umeng.soexample.module.data.tongpao.DiscussedBean;

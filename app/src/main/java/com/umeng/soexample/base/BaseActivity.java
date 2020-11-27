@@ -1,6 +1,7 @@
 package com.umeng.soexample.base;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +63,11 @@ public abstract class BaseActivity<P extends BasePersenter> extends AppCompatAct
     @Override
     public void loading(int visible) {
 
+    }
+
+    @Override
+    public void showToast(String msg,int time){
+        Toast.makeText(this, msg, time).show();
     }
 
     /**
