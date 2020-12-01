@@ -1,11 +1,18 @@
 package com.umeng.soexample.jpush;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.core.app.NotificationCompat;
+
+import com.umeng.soexample.R;
+import com.umeng.soexample.app.MyApp;
 import com.umeng.soexample.test.TestJPushActivity;
 
 import org.json.JSONException;
@@ -104,8 +111,10 @@ public class MyReceiver extends BroadcastReceiver {
 	//send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
 		if (TestJPushActivity.isForeground) {
+			//解析jpush推送过来的消息
 			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+			//创建intent
 			Intent msgIntent = new Intent(TestJPushActivity.MESSAGE_RECEIVED_ACTION);
 			msgIntent.putExtra(TestJPushActivity.KEY_MESSAGE, message);
 			if (!ExampleUtil.isEmpty(extras)) {
@@ -121,5 +130,17 @@ public class MyReceiver extends BroadcastReceiver {
 			}
 			LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
 		}
+	}
+
+	@SuppressLint("ServiceCast")
+	private void sendNotification(String title,String content){
+		Notification notification = new NotificationCompat.Builder(MyApp.app)
+				.setContentTitle(title)
+				.setContentText(content)
+				.setWhen(System.currentTimeMillis())
+				.setSmallIcon(R.mipmap.ic_launcher)
+				.build();
+		//发送通知
+		notification.notify();
 	}
 }

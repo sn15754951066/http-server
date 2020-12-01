@@ -17,6 +17,9 @@ import cn.jpush.android.api.JPushMessage;
 import cn.jpush.android.api.NotificationMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
 
+/**
+ * 用来接收和处理自定义
+ */
 public class PushMessageReceiver extends JPushMessageReceiver{
     private static final String TAG = "PushMessageReceiver";
     @Override
