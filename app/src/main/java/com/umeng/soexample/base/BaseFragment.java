@@ -60,6 +60,11 @@ public abstract class BaseFragment<P extends BasePersenter> extends Fragment imp
     }
 
     @Override
+    public void showToast(String msg,int time){
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if(unbinder != null){

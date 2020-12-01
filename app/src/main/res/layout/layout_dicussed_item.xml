@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/shape_dicussed_bg">
+    android:background="@drawable/shape_dicussed_bg"
+    android:paddingHorizontal="10dp">
 
     <ImageView
         android:id="@+id/img_icon"

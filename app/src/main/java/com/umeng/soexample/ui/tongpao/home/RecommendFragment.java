@@ -62,6 +62,13 @@ public class RecommendFragment extends BaseFragment<RecommendPersenter> implemen
         recommendAdapter = new RecommendAdapter(mContext,recommendList);
         recyclerviewRecommend.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerviewRecommend.setAdapter(recommendAdapter);
+        //打开详情页
+        recommendAdapter.addListClick(new BaseAdapter.IListClick() {
+            @Override
+            public void itemClick(int pos) {
+
+            }
+        });
     }
 
     @Override

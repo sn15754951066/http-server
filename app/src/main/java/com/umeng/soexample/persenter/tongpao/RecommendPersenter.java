@@ -40,7 +40,7 @@ public class RecommendPersenter extends BasePersenter<IRecommend.View> implement
 
     @Override
     public void getBanner() {
-        this.model.loadRecommend(new Callback() {
+        this.model.getBanner(new Callback() {
             @Override
             public void fail(String msg) {
                 if(view != null){

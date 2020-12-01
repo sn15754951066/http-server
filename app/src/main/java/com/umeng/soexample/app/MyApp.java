@@ -6,6 +6,8 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class MyApp extends Application {
 
 
@@ -16,6 +18,14 @@ public class MyApp extends Application {
         super.onCreate();
         app = this;
         initUM();
+
+        initJPush();
+    }
+
+    //初始化极光
+    private void initJPush() {
+        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
     }
 
     {

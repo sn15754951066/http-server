@@ -49,6 +49,9 @@ public class HandlerActivity extends AppCompatActivity {
 
     }
 
+
+
+
     private void initView() {
         Message msg1 = new Message();
         msg1.what = 2;

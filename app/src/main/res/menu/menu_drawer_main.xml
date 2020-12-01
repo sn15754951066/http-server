@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_group_app">
+        <item android:id="@+id/menu_tongpao"
+            android:icon="@mipmap/ic_launcher"
+            android:title="同袍"/>
+        <item android:id="@+id/menu_map"
+            android:icon="@mipmap/ic_launcher"
+            android:title="地图"/>
+    </group>
+    <group android:id="@+id/menu_group_setting">
+        <item android:id="@+id/menu_setting"
+            android:icon="@mipmap/ic_launcher"
+            android:title="设置"></item>
+    </group>
+</menu>

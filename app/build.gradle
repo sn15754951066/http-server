@@ -5,11 +5,33 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.http"
+        applicationId "com.umeng.soexample"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+
+        //极光配置
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY  : "10c9c59afed25d290508e7e7",//值来自开发者平台取得的AppKey
+                JPUSH_CHANNEL : "default_developer",
+
+                //xiaomi_config_start
+                XIAOMI_APPID  : "MI-小米的APPID",
+                XIAOMI_APPKEY : "MI-小米的APPKEY",
+                //xiaomi_config_end
+                //oppo_config_start
+                OPPO_APPKEY   : "OP-oppo的APPKEY",
+                OPPO_APPID    : "OP-oppo的APPID",
+                OPPO_APPSECRET: "OP-oppo的APPSECRET",
+                //oppo_config_end
+                //vivo_config_start
+                VIVO_APPKEY   : "vivo的APPKEY",
+                VIVO_APPID    : "vivo的APPID",
+                //vivo_config_end
+        ]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -18,6 +40,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
         }
     }
 
@@ -34,16 +62,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    ndkVersion '22.0.6917172 rc1'
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
+    implementation project(path: ':jiguang')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //bottom navigation
+    implementation 'androidx.navigation:navigation-fragment:2.2.2'
+    implementation 'androidx.navigation:navigation-ui:2.2.2'
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
@@ -80,4 +114,8 @@ dependencies {
 
     implementation 'com.jaeger.ninegridimageview:library:1.0.2'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+
+    //极光
+    implementation(name: 'com.heytap.msp-push-2.1.0', ext: 'aar')
 }

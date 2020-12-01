@@ -1,34 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/drawer_layout">
 
-    <Button
-        android:id="@+id/btn_share"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="分享"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="分享"/>
 
-    <Button
-        android:id="@+id/btn_tongpao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="同袍"/>
+        <Button
+            android:id="@+id/btn_tongpao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="同袍"/>
 
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="测试"/>
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="测试"/>
 
-    <Button
-        android:id="@+id/btn_http"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="局域网测试"/>
+        <Button
+            android:id="@+id/btn_http"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="局域网测试"/>
+
+        <Button
+            android:id="@+id/btn_coordinator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="协调布局"/>
+
+        <Button
+            android:id="@+id/btn_myList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自定义实现刷新列表"/>
+        <Button
+            android:id="@+id/btn_jpush"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="极光推送"/>
+
+        <com.umeng.soexample.test.CircleView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/layout_drawer_header"
+        app:menu="@menu/menu_drawer_main"></com.google.android.material.navigation.NavigationView>
 
 
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
