@@ -20,6 +20,7 @@ import com.umeng.soexample.test.HttpActivity;
 import com.umeng.soexample.test.RefreshListActivity;
 import com.umeng.soexample.test.TestJPushActivity;
 import com.umeng.soexample.ui.home.HomeActivity;
+import com.umeng.soexample.ui.map.MapActivity;
 import com.umeng.soexample.ui.tongpao.TongpaoActivity;
 import com.umeng.soexample.um.SharedActivity;
 
@@ -30,7 +31,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    Button btnShared,btnTongpao,btnTest,btnHttp,btnCoordinator,btnMyList,btnJpush;
+    Button btnShared,btnTongpao,btnTest,btnHttp,btnCoordinator,btnMyList,btnJpush,btnMap;
 
     NavigationView navView;
     DrawerLayout drawerLayout;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnMyList = findViewById(R.id.btn_myList);
         btnCoordinator = findViewById(R.id.btn_coordinator);
         btnJpush = findViewById(R.id.btn_jpush);
+        btnMap = findViewById(R.id.btn_map);
         btnShared.setOnClickListener(this);
         btnTongpao.setOnClickListener(this);
         btnTest.setOnClickListener(this);
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCoordinator.setOnClickListener(this);
         btnMyList.setOnClickListener(this);
         btnJpush.setOnClickListener(this);
+        btnMap.setOnClickListener(this);
        /* Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);*/
     }
@@ -107,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_jpush:
                 Intent intent6 = new Intent(MainActivity.this, TestJPushActivity.class);
                 startActivity(intent6);
+                break;
+            case R.id.btn_map:
+                Intent intent7 = new Intent(MainActivity.this, MapActivity.class);
+                startActivity(intent7);
                 break;
         }
     }

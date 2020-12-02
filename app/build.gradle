@@ -66,7 +66,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     //noinspection GradleCompatible
@@ -117,5 +117,8 @@ dependencies {
 
 
     //极光
-    implementation(name: 'com.heytap.msp-push-2.1.0', ext: 'aar')
+    //implementation(name: 'com.heytap.msp-push-2.1.0', ext: 'aar')
+    //
+    //implementation(name:'BaiduLBS_AndroidSDK_Lib',ext: 'aar')
+
 }

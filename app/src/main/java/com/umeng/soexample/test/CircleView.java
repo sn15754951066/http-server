@@ -42,6 +42,18 @@ public class CircleView extends View {
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
+    //测量
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    //布局
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
     //Canvas 画纸
     @Override
     protected void onDraw(Canvas canvas) {
