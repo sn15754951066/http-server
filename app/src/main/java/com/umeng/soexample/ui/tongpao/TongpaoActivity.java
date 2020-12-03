@@ -28,10 +28,6 @@ import butterknife.ButterKnife;
 
 public class TongpaoActivity extends AppCompatActivity {
 
-    @BindView(R.id.tabLayout)
-    TabLayout tabLayout;
-    @BindView(R.id.viewPager)
-    ViewPager viewPager;
     @BindView(R.id.navi_tp_view)
     BottomNavigationView naviTpView;
 
@@ -51,14 +47,14 @@ public class TongpaoActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        fragments = new ArrayList<>();
+        /*fragments = new ArrayList<>();
         fragments.add(new RecommendFragment());
 
         //tablayout横向滚动
         tabLayout.setTabMode( TabLayout.MODE_SCROLLABLE );
         //初始化ViewPager
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);*/
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.homeFragment,R.id.discoverFragment,R.id.shopFragment,R.id.mineFragment).build();
@@ -73,7 +69,7 @@ public class TongpaoActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
-                case R.id.menu_navi_home:
+                case R.id.homeFragment:
                     menuItem.setIcon(R.mipmap.icon_home_selected);
                     break;
                 case R.id.menu_navi_discover:
