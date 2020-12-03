@@ -2,6 +2,8 @@ package com.umeng.soexample.app;
 
 import android.app.Application;
 
+import androidx.multidex.MultiDex;
+
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.umeng.analytics.MobclickAgent;
@@ -19,11 +21,14 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
+
         initUM();
 
         initJPush();
 
         initMap();
+
+        MultiDex.install(this);
     }
 
     private void initMap() {

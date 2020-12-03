@@ -6,12 +6,12 @@ android {
 
     defaultConfig {
         applicationId "com.umeng.soexample"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
-
+        multiDexEnabled true
         //极光配置
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
@@ -49,6 +49,12 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -62,7 +68,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    ndkVersion '22.0.6917172 rc1'
+    //ndkVersion '22.0.6917172 rc1'
 }
 
 dependencies {
@@ -75,6 +81,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.android.support:multidex:1.0.3'
     //bottom navigation
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
@@ -120,5 +127,7 @@ dependencies {
     //implementation(name: 'com.heytap.msp-push-2.1.0', ext: 'aar')
     //
     //implementation(name:'BaiduLBS_AndroidSDK_Lib',ext: 'aar')
+
+    //compileOnly files('libs/BaiduLBS_Android.jar')
 
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -28,6 +29,7 @@ import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.PlaneInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiAddrInfo;
@@ -37,6 +39,17 @@ import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.IndoorRouteResult;
+import com.baidu.mapapi.search.route.MassTransitRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteLine;
+import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.umeng.soexample.R;
 import com.umeng.soexample.base.BaseAdapter;
 
@@ -45,6 +58,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mapapi.overlayutil.WalkingRouteOverlay;
 
 public class MapActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -60,6 +74,13 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    @BindView(R.id.input_start)
+    EditText inputStart;
+    @BindView(R.id.input_end)
+    EditText inputEnd;
+    @BindView(R.id.btn_routePlan)
+    Button btnRoutePlan;
+
     //百度地图的数据操作
     BaiduMap baiduMap;
     //百度地图定位的类
@@ -73,6 +94,14 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
 
     /********************检索***********************/
 
+
+
+    /*******************路径规划********************/
+    RoutePlanSearch routePlanSearch;
+
+    /*******************路径规划********************/
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,12 +111,15 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         initView();
         initMap();
         initLocation();
-
+        //初始化检索
         initPoi();
+        //初始化路径规划
+        initRoutePlan();
     }
 
     private void initView() {
         btnSearch.setOnClickListener(this);
+        btnRoutePlan.setOnClickListener(this);
     }
 
     private void initMap() {
@@ -147,6 +179,9 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         switch (v.getId()){
             case R.id.btn_search:
                 search();
+                break;
+            case R.id.btn_routePlan:
+                searchRoute();
                 break;
         }
     }
@@ -221,6 +256,78 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         }
     };
 
+
+    /*******************************路径规划*************************/
+    private PlanNode startNode,endNode; //开始和结束的坐标点
+
+
+    //初始化路径规划
+    private void initRoutePlan(){
+        routePlanSearch = RoutePlanSearch.newInstance();
+        routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
+    }
+
+    OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
+        @Override
+        public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+            Log.i(TAG,"onGetWalkingRouteResult");
+
+            //创建一个路径规划的类
+            WalkingRouteOverlay walkingRouteOverlay = new WalkingRouteOverlay(baiduMap);
+            //判断当前查找出来的路线
+            if(walkingRouteResult.getRouteLines() != null && walkingRouteResult.getRouteLines().size() > 0){
+                walkingRouteOverlay.setData(walkingRouteResult.getRouteLines().get(0));
+                walkingRouteOverlay.addToMap();
+            }
+        }
+
+        @Override
+        public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+            Log.i(TAG,"onGetTransitRouteResult");
+        }
+
+        @Override
+        public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+            Log.i(TAG,"onGetMassTransitRouteResult");
+        }
+
+        @Override
+        public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+            Log.i(TAG,"onGetDrivingRouteResult");
+        }
+
+        @Override
+        public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+            Log.i(TAG,"onGetIndoorRouteResult");
+        }
+
+        @Override
+        public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+            Log.i(TAG,"onGetBikingRouteResult");
+        }
+    };
+
+    private void searchRoute(){
+        String startName,endName;
+        startName = inputStart.getText().toString();
+        endName = inputEnd.getText().toString();
+        if(TextUtils.isEmpty(startName) || TextUtils.isEmpty(endName)){
+            Toast.makeText(this, "请输入正确起点和终点", Toast.LENGTH_SHORT).show();
+        }else{
+            startNode = PlanNode.withCityNameAndPlaceName("北京",startName);
+            endNode = PlanNode.withCityNameAndPlaceName("北京",endName);
+            WalkingRoutePlanOption option = new WalkingRoutePlanOption();
+            option.from(startNode);
+            option.to(endNode);
+            //搜索路径
+            routePlanSearch.walkingSearch(option);
+        }
+    }
+
+
+
+
+
     /**
      * 以当前的经纬度为圆心绘制一个圆
      * @param lat
@@ -232,15 +339,17 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         //设置圆对象
         CircleOptions circleOptions = new CircleOptions().center(center)
                 .radius(2000)
-                .fillColor(0xff0000)
-                .stroke(new Stroke(10,0x000000)); //设置边框的宽度和颜色
+                .fillColor(0x50ff0000)
+                .stroke(new Stroke(2,0xff000000)); //设置边框的宽度和颜色
+        baiduMap.clear();
         //在地图上添加显示圆
         Overlay circle = baiduMap.addOverlay(circleOptions);
+
     }
 
     private void addMark(double lat,double gt){
         //定义Maker坐标点
-        LatLng point = new LatLng(39.963175, 116.400244);
+        LatLng point = new LatLng(lat, gt);
         //构建Marker图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory
                 .fromResource(R.mipmap.icon_mark);
