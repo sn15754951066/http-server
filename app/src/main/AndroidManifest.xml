@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.map.MapActivity"></activity>
+        <activity android:name=".test.TouchActivity"></activity>
+        <activity android:name=".ui.map.MapActivity" />
         <activity android:name=".test.TestJPushActivity" />
         <activity android:name=".test.RefreshListActivity" />
         <activity android:name=".test.CoordinatorLayoutActivity" />
@@ -79,7 +80,7 @@
         </service> <!-- 百度地图的key的设置 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="CMTVdCrfgMur0ofItPheRlveQjr0Oxdh"></meta-data> <!-- 百度地图定位的服务 :remote表示新开启一个进程 -->
+            android:value="CMTVdCrfgMur0ofItPheRlveQjr0Oxdh" /> <!-- 百度地图定位的服务 :remote表示新开启一个进程 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

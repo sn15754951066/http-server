@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".test.TouchActivity"
+    android:background="#ff0000">
+
+    <com.umeng.soexample.test.MyVG
+        android:id="@+id/myViewGroup"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="#00ff00">
+
+        <com.umeng.soexample.test.MyView
+            android:id="@+id/myView"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:background="#342DF1"></com.umeng.soexample.test.MyView>
+
+    </com.umeng.soexample.test.MyVG>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,6 +57,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="打开地图"/>
+        <Button
+            android:id="@+id/btn_touch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="事件分发"/>
 
         <com.umeng.soexample.test.CircleView
             android:layout_width="wrap_content"

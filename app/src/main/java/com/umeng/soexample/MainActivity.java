@@ -19,6 +19,7 @@ import com.umeng.soexample.test.HandlerActivity;
 import com.umeng.soexample.test.HttpActivity;
 import com.umeng.soexample.test.RefreshListActivity;
 import com.umeng.soexample.test.TestJPushActivity;
+import com.umeng.soexample.test.TouchActivity;
 import com.umeng.soexample.ui.home.HomeActivity;
 import com.umeng.soexample.ui.map.MapActivity;
 import com.umeng.soexample.ui.tongpao.TongpaoActivity;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    Button btnShared,btnTongpao,btnTest,btnHttp,btnCoordinator,btnMyList,btnJpush,btnMap;
+    Button btnShared,btnTongpao,btnTest,btnHttp,btnCoordinator,btnMyList,btnJpush,btnMap,btnTouch;
 
     NavigationView navView;
     DrawerLayout drawerLayout;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCoordinator = findViewById(R.id.btn_coordinator);
         btnJpush = findViewById(R.id.btn_jpush);
         btnMap = findViewById(R.id.btn_map);
+        btnTouch = findViewById(R.id.btn_touch);
         btnShared.setOnClickListener(this);
         btnTongpao.setOnClickListener(this);
         btnTest.setOnClickListener(this);
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnMyList.setOnClickListener(this);
         btnJpush.setOnClickListener(this);
         btnMap.setOnClickListener(this);
+        btnTouch.setOnClickListener(this);
        /* Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);*/
     }
@@ -114,6 +117,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_map:
                 Intent intent7 = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent7);
+                break;
+            case R.id.btn_touch:
+                Intent intent8 = new Intent(MainActivity.this, TouchActivity.class);
+                startActivity(intent8);
                 break;
         }
     }
