@@ -1,17 +1,24 @@
 package com.umeng.soexample.ui.map;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -29,10 +36,18 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.core.PlaneInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.district.DistrictResult;
+import com.baidu.mapapi.search.district.DistrictSearch;
+import com.baidu.mapapi.search.district.DistrictSearchOption;
+import com.baidu.mapapi.search.district.OnGetDistricSearchResultListener;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiAddrInfo;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
@@ -56,14 +71,19 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.baidu.mapapi.utils.poi.DispathcPoiData;
 import com.umeng.soexample.R;
 import com.umeng.soexample.base.BaseAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mapapi.clusterutil.clustering.ClusterItem;
+import mapapi.clusterutil.clustering.ClusterManager;
 import mapapi.overlayutil.WalkingRouteOverlay;
 
 public class MapActivity extends AppCompatActivity implements View.OnClickListener {
@@ -89,6 +109,8 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
     Button btnRoutePlan;
     @BindView(R.id.recy_nodes)
     RecyclerView recyNodes;
+    @BindView(R.id.layout_edit)
+    LinearLayout layoutEdit;
 
     //百度地图的数据操作
     BaiduMap baiduMap;
@@ -110,6 +132,12 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
 
     /*******************路径规划********************/
 
+    /************行政区域*************/
+    DistrictSearch districtSearch;
+
+    //点聚合
+    ClusterManager clusterManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +152,20 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
         initPoi();
         //初始化路径规划
         initRoutePlan();
+        //行政区域
+        initDistrict();
+
+        //点聚合
+        initCluster();
+
+       /* ConstraintLayout relativeLayout = (ConstraintLayout) LayoutInflater.from(this).inflate(R.layout.activity_news,null);
+        layoutEdit.addView(relativeLayout);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) relativeLayout.getLayoutParams();
+        if(params == null){
+            params = (ConstraintLayout.LayoutParams) new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        */
+
     }
 
     private void initView() {
@@ -244,8 +286,18 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
             Log.i(TAG,"onGetPoiResult");
             poiList.clear();
             if(poiResult.getAllPoi() != null && poiResult.getAllPoi().size() > 0){
-                poiList.addAll(poiResult.getAllPoi());
-                searchItemAdapter.notifyDataSetChanged();
+                //点聚合
+                List<MyItem> list = new ArrayList<>();
+                for(PoiInfo item:poiResult.getAllPoi()){
+                    // 添加Marker点
+                    LatLng ll = new LatLng(item.getLocation().latitude, item.getLocation().longitude);
+                    MyItem myItem = new MyItem(ll);
+                    list.add(myItem);
+                }
+                updateCluster(list);
+
+               /* poiList.addAll(poiResult.getAllPoi());
+                searchItemAdapter.notifyDataSetChanged();*/
             }
         }
 
@@ -449,8 +501,74 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
     }
 
 
+    /******************行政区域********************/
+    private void initDistrict(){
+        districtSearch = DistrictSearch.newInstance();
+        districtSearch.setOnDistrictSearchListener(districSearchResultListener);
+        districtSearch.searchDistrict(new DistrictSearchOption()
+        .cityName("北京")
+        .districtName("海淀区"));
+    }
 
+    //行政区域的监听
+    OnGetDistricSearchResultListener districSearchResultListener = new OnGetDistricSearchResultListener() {
+        @Override
+        public void onGetDistrictResult(DistrictResult districtResult) {
+            if(null != districtResult){
+                //数据
+                baiduMap.clear();
+                //获取边界坐标点，并展示
+                if (districtResult.error == SearchResult.ERRORNO.NO_ERROR) {
+                    List<List<LatLng>> polyLines = districtResult.getPolylines();
+                    if (polyLines == null) {
+                        return;
+                    }
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    for (List<LatLng> polyline : polyLines) {
+                        OverlayOptions ooPolyline11 = new PolylineOptions().width(10)
+                                .points(polyline).dottedLine(true).color(Color.BLUE);
+                        baiduMap.addOverlay(ooPolyline11);
+                        OverlayOptions ooPolygon = new PolygonOptions().points(polyline)
+                                .stroke(new Stroke(5, 0xAA00FF88)).fillColor(0xAAFFFF00);
+                        baiduMap.addOverlay(ooPolygon);
+                        for (LatLng latLng : polyline) {
+                            builder.include(latLng);
+                        }
+                    }
+                    baiduMap.setMapStatus(MapStatusUpdateFactory
+                            .newLatLngBounds(builder.build()));
 
+                }
+            }
+        }
+    };
+
+    /**************点聚合******************/
+    private void initCluster(){
+        //初始化点聚合管理类
+        clusterManager = new ClusterManager<MyItem>(this, baiduMap);
+    }
+
+    //ClusterItem接口的实现类
+    public class MyItem implements ClusterItem {
+        LatLng mPosition;
+        public MyItem(LatLng position) {
+            mPosition = position;
+        }
+        @Override
+        public LatLng getPosition() {
+            return mPosition;
+        }
+        @Override
+        public BitmapDescriptor getBitmapDescriptor() {
+            return BitmapDescriptorFactory
+                    .fromResource(R.mipmap.icon_mark);
+        }
+    }
+
+    private void updateCluster(List<MyItem> clusters){
+        clusterManager.addItems(clusters);
+    }
 
     /**
      * 以当前的经纬度为圆心绘制一个圆

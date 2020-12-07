@@ -34,7 +34,7 @@ public class MyView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         PrintUtils.printInfo(TAG,"onTouchEvent",event.getAction());
-        //return super.onTouchEvent(event);
-        return true;   //事件将由view来消费
+        return super.onTouchEvent(event);
+        //return true;   //事件将由view来消费
     }
 }

@@ -43,6 +43,7 @@ public class MyVG extends LinearLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         PrintUtils.printInfo(TAG,"onTouchEvent",event.getAction());
+        //return true;
         return super.onTouchEvent(event);
     }
 }

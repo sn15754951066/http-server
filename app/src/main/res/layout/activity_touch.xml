@@ -22,5 +22,11 @@
             android:background="#342DF1"></com.umeng.soexample.test.MyView>
 
     </com.umeng.soexample.test.MyVG>
+    <Button
+        android:id="@+id/btn_down"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="下载"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

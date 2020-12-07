@@ -62,6 +62,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="事件分发"/>
+        <Button
+            android:id="@+id/btn_easemob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="环信聊天"/>
+
 
         <com.umeng.soexample.test.CircleView
             android:layout_width="wrap_content"

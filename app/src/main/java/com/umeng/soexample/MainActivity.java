@@ -20,6 +20,7 @@ import com.umeng.soexample.test.HttpActivity;
 import com.umeng.soexample.test.RefreshListActivity;
 import com.umeng.soexample.test.TestJPushActivity;
 import com.umeng.soexample.test.TouchActivity;
+import com.umeng.soexample.ui.easemob.EaseMobActivity;
 import com.umeng.soexample.ui.home.HomeActivity;
 import com.umeng.soexample.ui.map.MapActivity;
 import com.umeng.soexample.ui.tongpao.TongpaoActivity;
@@ -32,7 +33,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    Button btnShared,btnTongpao,btnTest,btnHttp,btnCoordinator,btnMyList,btnJpush,btnMap,btnTouch;
+    Button btnShared,btnTongpao,btnTest,btnHttp,btnCoordinator,btnMyList,btnJpush,btnMap,btnTouch,
+    btnEaseMob;
 
     NavigationView navView;
     DrawerLayout drawerLayout;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnJpush = findViewById(R.id.btn_jpush);
         btnMap = findViewById(R.id.btn_map);
         btnTouch = findViewById(R.id.btn_touch);
+        btnEaseMob = findViewById(R.id.btn_easemob);
         btnShared.setOnClickListener(this);
         btnTongpao.setOnClickListener(this);
         btnTest.setOnClickListener(this);
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnJpush.setOnClickListener(this);
         btnMap.setOnClickListener(this);
         btnTouch.setOnClickListener(this);
+        btnEaseMob.setOnClickListener(this);
        /* Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);*/
     }
@@ -121,6 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_touch:
                 Intent intent8 = new Intent(MainActivity.this, TouchActivity.class);
                 startActivity(intent8);
+                break;
+            case R.id.btn_easemob:
+                Intent intent9 = new Intent(MainActivity.this, EaseMobActivity.class);
+                startActivity(intent9);
                 break;
         }
     }
