@@ -15,8 +15,8 @@ import java.util.List;
 public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
 
     List<D> mData; //adapter的数据
-    Context context;
-    IListClick click;
+    protected Context context;
+    protected IListClick click;
 
     public BaseAdapter(Context context,List<D> data){
         this.context = context;
@@ -51,12 +51,15 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
         return mData.size();
     }
 
-
+    protected  List<D> getData(){
+        return mData;
+    }
 
 
     protected abstract int getLayout();
 
     protected abstract void bindData(D data,VH vh);
+
 
     public void addListClick(IListClick click){
         this.click = click;

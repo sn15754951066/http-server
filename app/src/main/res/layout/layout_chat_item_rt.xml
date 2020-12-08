@@ -13,6 +13,7 @@
         android:layout_marginLeft="100dp"
         android:scaleX="-1">
         <TextView
+            android:id="@+id/txt_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -21,15 +22,14 @@
             android:scaleX="-1"
             android:text="新技术的开发骄傲i士大夫艰苦拉萨免费看舍得离开房间ask浪费机阿里山扩大飞机卡拉第三方啊卡拉第三方ask劳动法爱的色放卡戴珊开了房间as
 上的飞机拉萨酱豆腐卢卡斯士大夫你困了就爱上d
-阿斯蒂芬解耦啊"
-            android:visibility="gone"></TextView>
+阿斯蒂芬解耦啊"></TextView>
 
         <ImageView
+            android:id="@+id/img_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@mipmap/ic_launcher"
             android:layout_marginRight="20dp"
-            android:scaleX="-1"
             android:layout_alignParentRight="true"></ImageView>
 
     </RelativeLayout>

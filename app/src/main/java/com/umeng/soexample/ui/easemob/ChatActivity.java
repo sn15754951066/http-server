@@ -1,24 +1,34 @@
 package com.umeng.soexample.ui.easemob;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.superrtc.mediamanager.EMediaEntities;
 import com.umeng.soexample.R;
+import com.umeng.soexample.utils.GlideEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +39,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView recyChat;
     EditText inputWord;
     Button btnSend;
+    ImageView img;
 
     private String toUserId;
     private String selfId;
 
     List<EMMessage> msgsList;
+    ChatAdapter chatAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +55,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         recyChat = findViewById(R.id.recy_chat);
         inputWord = findViewById(R.id.input_word);
         btnSend = findViewById(R.id.btn_send);
+        img = findViewById(R.id.img_input);
 
         btnSend.setOnClickListener(this);
+        img.setOnClickListener(this);
         initData();
         initMsgListner();
     }
@@ -59,6 +73,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         }
         selfId = EMClient.getInstance().getCurrentUser();
         msgsList = new ArrayList<>();
+        chatAdapter = new ChatAdapter(this,msgsList);
+        recyChat.setLayoutManager(new LinearLayoutManager(this));
+        recyChat.setAdapter(chatAdapter);
 
     }
 
@@ -67,6 +84,39 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.btn_send:
                 sendMsg();
+                break;
+            case R.id.img_input:
+                openPhoto();
+                break;
+        }
+    }
+
+    private void openPhoto(){
+        PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofImage())
+                .loadImageEngine(GlideEngine.createGlideEngine()) // Please refer to the Demo GlideEngine.java
+                .maxSelectNum(9)
+                .imageSpanCount(4)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case PictureConfig.CHOOSE_REQUEST:
+                // onResult Callback
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                if (selectList.size() == 0) return;
+                //获取本地图片的选择地址，上传到服务器
+                //头像的压缩和二次采样
+                //把选中的图片插入到列表
+                for(LocalMedia item:selectList){
+                    sendMsgByImage(item.getPath());
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -90,6 +140,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         EMClient.getInstance().chatManager().sendMessage(message);
     }
 
+    /**
+     * 发图片
+     */
+    private void sendMsgByImage(String path){
+        Uri uri = Uri.parse(path);
+        EMMessage msg = EMMessage.createImageSendMessage(uri, false, toUserId);
+        /*EMImageMessageBody body = new EMImageMessageBody(uri);
+        msg.addBody(body);*/
+        //如果是群聊，设置chattype，默认是单聊
+        EMClient.getInstance().chatManager().sendMessage(msg);
+    }
+
     private void initMsgListner(){
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
     }
@@ -100,21 +162,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         public void onMessageReceived(List<EMMessage> messages) {
             //收到消息
             msgsList.addAll(messages);
-            if(toUserId.equals(messages.get(0).getFrom())){
-                //好友
-                messages.get(0).getBody();
-                //EMMessageBody messageBody;
-                if(messages.get(0).getType() == EMMessage.Type.TXT){
-                    EMTextMessageBody textMessageBody = (EMTextMessageBody) messages.get(0).getBody();
-                    textMessageBody.getMessage();
-                }else if(messages.get(0).getType() == EMMessage.Type.LOCATION){
-                    //定位销
+            recyChat.post(new Runnable() {
+                @Override
+                public void run() {
+                    chatAdapter.notifyDataSetChanged();
                 }
-
-            }else if(selfId.equals(messages.get(0).getFrom())){
-                //自己
-            }
-
+            });
         }
 
         @Override

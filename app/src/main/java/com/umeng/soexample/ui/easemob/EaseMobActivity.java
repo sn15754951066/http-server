@@ -84,7 +84,7 @@ public class EaseMobActivity extends AppCompatActivity implements View.OnClickLi
 
     private void login(){
     //登录
-        String username = "2002a_1";
+        String username = "2002a_2";
         String password = "123456";
         Log.i(TAG,"环信login");
         EMClient.getInstance().login(username, password, new EMCallBack() {
