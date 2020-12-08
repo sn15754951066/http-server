@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.superrtc.mediamanager.EMediaEntities;
 import com.umeng.soexample.R;
 
 import java.util.ArrayList;
@@ -97,11 +100,20 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         public void onMessageReceived(List<EMMessage> messages) {
             //收到消息
             msgsList.addAll(messages);
-            /*if(toUserId.equals(messages.get(0).getFrom())){
+            if(toUserId.equals(messages.get(0).getFrom())){
                 //好友
+                messages.get(0).getBody();
+                //EMMessageBody messageBody;
+                if(messages.get(0).getType() == EMMessage.Type.TXT){
+                    EMTextMessageBody textMessageBody = (EMTextMessageBody) messages.get(0).getBody();
+                    textMessageBody.getMessage();
+                }else if(messages.get(0).getType() == EMMessage.Type.LOCATION){
+                    //定位销
+                }
+
             }else if(selfId.equals(messages.get(0).getFrom())){
                 //自己
-            }*/
+            }
 
         }
 

@@ -27,8 +27,16 @@
         android:hint="输入内容"
         app:layout_constraintTop_toBottomOf="@id/recy_chat"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btn_send"
+        app:layout_constraintRight_toLeftOf="@id/img_input"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageView
+        android:id="@+id/img_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/recy_chat"
+        android:src="@mipmap/icon_input_img"
+        app:layout_constraintRight_toLeftOf="@id/btn_send"
+        app:layout_constraintLeft_toRightOf="@id/input_word" />
     <Button
         android:id="@+id/btn_send"
         android:layout_width="wrap_content"

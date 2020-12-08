@@ -48,6 +48,8 @@ public class EaseMobActivity extends AppCompatActivity implements View.OnClickLi
         recyUserList = findViewById(R.id.recy_userList);
 
 
+
+
         btnLogin.setOnClickListener(this);
 
         initUserList();
