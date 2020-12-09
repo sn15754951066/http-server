@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
@@ -28,7 +29,11 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.superrtc.mediamanager.EMediaEntities;
 import com.umeng.soexample.R;
+import com.umeng.soexample.app.Constants;
+import com.umeng.soexample.module.data.EMUserInfo;
 import com.umeng.soexample.utils.GlideEngine;
+import com.umeng.soexample.utils.SpUtils;
+import com.umeng.soexample.utils.UserInfoManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,9 +175,34 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
 
+        /**
+         * 接收透传消息  --- 头像更新
+         * @param messages
+         */
         @Override
         public void onCmdMessageReceived(List<EMMessage> messages) {
             //收到透传消息
+            for(EMMessage item:messages){
+                if(item.getType() == EMMessage.Type.CMD){
+                    EMCmdMessageBody msg = (EMCmdMessageBody) item.getBody();
+                    if(Constants.ACTION_UPDATEHEADER.equals(msg.action())){
+                        //刷新界面更新用户头像
+                        String action = msg.action();
+                        if(!TextUtils.isEmpty(action)){
+                            String uid = item.getFrom();
+                            SpUtils.getInstance().setValue(uid,action);
+                            EMUserInfo user = UserInfoManager.getInstance().getUserInfoByUid(uid);
+                            if(user != null){
+                                user.setHeader(action);
+                            }
+                        }
+
+                    }else if(Constants.ACTION_UPDATENICKNAME.equals(msg.action())){
+                        //刷新界面更新用户昵称
+
+                    }
+                }
+            }
         }
 
         @Override

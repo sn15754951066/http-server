@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,9 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.umeng.soexample.R;
 import com.umeng.soexample.base.BaseAdapter;
+import com.umeng.soexample.module.data.EMUserInfo;
+import com.umeng.soexample.utils.SpUtils;
+import com.umeng.soexample.utils.UserInfoManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +39,7 @@ public class EaseMobActivity extends AppCompatActivity implements View.OnClickLi
 
     private Button btnLogin;
     RecyclerView recyUserList;
-    List<String> userList;
+    List<EMUserInfo> userList;
     FriendsAdapter friendsAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -57,16 +61,16 @@ public class EaseMobActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initUserList(){
-        userList = new ArrayList<>();
+        userList = UserInfoManager.getInstance().getAllUsers();
         friendsAdapter = new FriendsAdapter(this,userList);
         recyUserList.setLayoutManager(new LinearLayoutManager(this));
         recyUserList.setAdapter(friendsAdapter);
         friendsAdapter.addListClick(new BaseAdapter.IListClick() {
             @Override
             public void itemClick(int pos) {
-                String userid = userList.get(pos);
+                String userid = userList.get(pos).getUid();
                 Intent intent = new Intent(EaseMobActivity.this,ChatActivity.class);
-                intent.putExtra("touserid",userList.get(pos));
+                intent.putExtra("touserid",userList.get(pos).getUid());
                 startActivity(intent);
             }
         });
@@ -122,9 +126,18 @@ public class EaseMobActivity extends AppCompatActivity implements View.OnClickLi
     private void getFriends() {
         try {
             List<String> friends = EMClient.getInstance().contactManager().getAllContactsFromServer();
-            userList.clear();
+            List<EMUserInfo> list = new ArrayList<>();
+            for(String item:friends){
+                EMUserInfo user = new EMUserInfo();
+                user.setUid(item);
+                String header = SpUtils.getInstance().getString(item);
+                if(!TextUtils.isEmpty(header)){
+                    user.setHeader(header);
+                }
+                list.add(user);
+            }
+            UserInfoManager.getInstance().addUsers(list);
             if(friends != null){
-                userList.addAll(friends);
                 recyUserList.post(new Runnable() {
                     @Override
                     public void run() {

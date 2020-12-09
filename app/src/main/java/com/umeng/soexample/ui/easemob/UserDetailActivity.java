@@ -128,6 +128,8 @@ public class UserDetailActivity extends AppCompatActivity {
             public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
                 //上次进度
                 Log.i("oss_upload",currentSize+"/"+totalSize);
+                // 进度百分比的计算
+                // int p = (int) (currentSize/totalSize*100);
                 if(currentSize == totalSize){
                     //完成
                     String headUrl = request.getUploadFilePath();
@@ -144,7 +146,9 @@ public class UserDetailActivity extends AppCompatActivity {
                 Log.d("PutObject", "UploadSuccess");
                 Log.d("ETag", result.getETag());
                 Log.d("RequestId", result.getRequestId());
+                //成功的回调中读取相关的上传文件的信息  生成一个url地址
                 String url = ossClient.presignPublicObjectURL(request.getBucketName(),request.getObjectKey());
+                //调用服务器接口 把url上传到服务器的接口
                 SpUtils.getInstance().setValue(username,url);
                 updateHead(url);
             }
