@@ -18,6 +18,12 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
     protected Context context;
     protected IListClick click;
 
+    protected IItemViewClick iItemViewClick;
+
+    public void addItemViewClick(IItemViewClick click){
+        this.iItemViewClick = click;
+    }
+
     public BaseAdapter(Context context,List<D> data){
         this.context = context;
         mData = data;
@@ -60,7 +66,6 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
 
     protected abstract void bindData(D data,VH vh);
 
-
     public void addListClick(IListClick click){
         this.click = click;
     }
@@ -70,6 +75,10 @@ public abstract class BaseAdapter<D> extends RecyclerView.Adapter {
         void itemClick(int pos);
     }
 
+    public interface IItemViewClick<D>{
+        //条目中的元素点击
+        void itemViewClick(int viewid,D data);
+    }
 
 
     public class VH extends RecyclerView.ViewHolder{

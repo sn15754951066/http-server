@@ -34,7 +34,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.easemob.ChatActivity"></activity>
+        <activity android:name=".ui.easemob.UserDetailActivity"></activity>
+        <activity android:name=".ui.easemob.ChatActivity" />
         <activity android:name=".ui.easemob.FindUserActivity" />
         <activity android:name=".ui.easemob.EaseMobActivity" />
         <activity android:name=".test.TouchActivity" />

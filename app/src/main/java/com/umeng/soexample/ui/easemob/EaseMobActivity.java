@@ -70,6 +70,16 @@ public class EaseMobActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
             }
         });
+
+        //处理点击条目中的按钮
+        friendsAdapter.addItemViewClick(new BaseAdapter.IItemViewClick<String>() {
+            @Override
+            public void itemViewClick(int viewid, String data) {
+                Intent intent = new Intent(EaseMobActivity.this,UserDetailActivity.class);
+                intent.putExtra("username",data);
+                startActivity(intent);
+            }
+        });
     }
 
 

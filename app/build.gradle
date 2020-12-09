@@ -139,5 +139,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:11.4.0'
     api 'com.hyphenate:hyphenate-sdk:3.6.8'
 
+    //oss
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
+
 
 }
