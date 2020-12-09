@@ -79,7 +79,7 @@ public class UserDetailActivity extends AppCompatActivity {
             username = intent.getStringExtra("username");
         }
 
-        String head = SpUtils.getInstance().getString("head");
+        String head = SpUtils.getInstance().getString(username);
         if(!TextUtils.isEmpty(head)){
             Glide.with(imghead).load(head).into(imghead);
         }
@@ -144,6 +144,9 @@ public class UserDetailActivity extends AppCompatActivity {
                 Log.d("PutObject", "UploadSuccess");
                 Log.d("ETag", result.getETag());
                 Log.d("RequestId", result.getRequestId());
+                String url = ossClient.presignPublicObjectURL(request.getBucketName(),request.getObjectKey());
+                SpUtils.getInstance().setValue(username,url);
+                updateHead(url);
             }
 
             @Override
@@ -160,6 +163,15 @@ public class UserDetailActivity extends AppCompatActivity {
                     Log.e("HostId", serviceException.getHostId());
                     Log.e("RawMessage", serviceException.getRawMessage());
                 }
+            }
+        });
+    }
+
+    private void updateHead(String url){
+        imghead.post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(imghead).load(url).into(imghead);
             }
         });
     }
